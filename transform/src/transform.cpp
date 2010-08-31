@@ -41,18 +41,17 @@ void Transform::setup() {
 
     ci::CameraPersp new_cam = cam.getCamera();
     new_cam.setFarClip(far_clip);
-    new_cam.setEyePoint(ci::Vec3f(width/2, height/2, -600.0f));
     cam.setCurrentCam(new_cam);
 
     img = ci::loadImage("/projects/cinder/nasa-iceberg.jpg");
-
-    ci::Surface::Iter it = img.getIter();
 
     values.resize(img.getWidth());
 
     for (std::vector<std::vector<int> >::iterator it = values.begin(); it != values.end(); ++it) {
         it->resize(img.getHeight());
     }
+
+    ci::Surface::Iter it = img.getIter();
 
     int i = 0;
     while(it.line()) {
