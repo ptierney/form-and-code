@@ -43,13 +43,17 @@ void Transform::setup() {
     new_cam.setFarClip(far_clip);
     cam.setCurrentCam(new_cam);
 
+    // TODO: fix this, it should load a resource
     img = ci::loadImage("/projects/cinder/nasa-iceberg.jpg");
 
     values.resize(img.getWidth());
+    std::foreach (values.begin(), values.end(), [&](std::vector<int> vec) { vec.resize(img.getHeight()) });
 
+    /*
     for (std::vector<std::vector<int> >::iterator it = values.begin(); it != values.end(); ++it) {
         it->resize(img.getHeight());
     }
+    */
 
     ci::Surface::Iter it = img.getIter();
 
