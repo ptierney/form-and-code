@@ -29,12 +29,12 @@ void Repeat::setup() {
     option = 1;
     glEnable(GL_SMOOTH);
     glLineWidth(1.2f);
-    ci::gl::color(ci::Color().black());
+    ci::gl::color(ci::Color::black());
 }
 
 void Repeat::draw() {
     ci::gl::setMatricesWindow(getWindowSize());
-    ci::gl::clear(ci::Color().white());
+    ci::gl::clear(ci::Color::white());
 
     if (option == 1) {
         // Option 1: Stitches

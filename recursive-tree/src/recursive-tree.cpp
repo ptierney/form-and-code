@@ -30,7 +30,7 @@ void RecursiveTree::prepareSettings(Settings* settings) {
 }
 
 void RecursiveTree::setup() {
-    ci::gl::color(ci::Color().black());
+    ci::gl::color(ci::Color::black());
     glEnable(GL_SMOOTH);
 
     angleOffsetA = ci::toRadians(1.5f);
@@ -39,7 +39,7 @@ void RecursiveTree::setup() {
 
 void RecursiveTree::draw() {
     ci::gl::setMatricesWindow(getWindowSize());
-    ci::gl::clear(ci::Color().white());              // White background
+    ci::gl::clear(ci::Color::white());              // White background
     ci::gl::translate(ci::Vec2f(width/2, height));   // Move to the center, bottom of the screen
     seed1(dotSize, ci::toRadians(270.0f), 0, 0);     // Start the tree
 }

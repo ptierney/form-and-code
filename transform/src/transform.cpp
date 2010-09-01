@@ -68,7 +68,7 @@ void Transform::setup() {
 void Transform::draw() {
     ci::gl::setMatricesWindow(getWindowSize());
     ci::gl::setMatrices(cam.getCamera());
-    ci::gl::clear(ci::Color().black());                  // Set black background
+    ci::gl::clear(ci::Color::black());                  // Set black background
     ci::gl::translate(ci::Vec3f(width/2, height/2, 0));  // Move to the center
     ci::gl::scale(ci::Vec3f(4.0f, 4.0f, 4.0f));          // Scale to 400%
     
