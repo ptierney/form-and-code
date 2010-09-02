@@ -13,8 +13,6 @@ private:
     std::vector<ci::Vec2f> superformula(float m, float n1, float n2, float n3);
     ci::Vec2f superformulaPoint(float m, float n1, float n2, float n3, float phi);
 
-    int width;
-    int height;
     float scaler;
     int m;
     float n1;

@@ -23,17 +23,12 @@ private:
 
     ci::MayaCamUI cam;
     float far_clip;
-
-    int width;
-    int height;
 };
 
 void Transform::prepareSettings(Settings* settings) {
-    width = 1024;
-    height = 768;
     far_clip = 10000.0f;
     angle = 0.0f;
-    settings->setWindowSize(width, height);
+    settings->setWindowSize(1024, 768);
 }
 
 void Transform::setup() {
@@ -46,14 +41,11 @@ void Transform::setup() {
     // TODO: fix this, it should load a resource
     img = ci::loadImage("/projects/cinder/nasa-iceberg.jpg");
 
+    // Make sure there's enough room in the vector
     values.resize(img.getWidth());
-    std::foreach (values.begin(), values.end(), [&](std::vector<int> vec) { vec.resize(img.getHeight()) });
-
-    /*
-    for (std::vector<std::vector<int> >::iterator it = values.begin(); it != values.end(); ++it) {
-        it->resize(img.getHeight());
+    for (int i = 0; i < img.getWidth(); i++) {
+        values[i].resize(img.getHeight());
     }
-    */
 
     ci::Surface::Iter it = img.getIter();
 
@@ -72,9 +64,9 @@ void Transform::setup() {
 void Transform::draw() {
     ci::gl::setMatricesWindow(getWindowSize());
     ci::gl::setMatrices(cam.getCamera());
-    ci::gl::clear(ci::Color::black());                  // Set black background
-    ci::gl::translate(ci::Vec3f(width/2, height/2, 0));  // Move to the center
-    ci::gl::scale(ci::Vec3f(4.0f, 4.0f, 4.0f));          // Scale to 400%
+    ci::gl::clear(ci::Color::black());                                         // Set black background
+    ci::gl::translate(ci::Vec3f(getWindowWidth()/2, getWindowHeight()/2, 0));  // Move to the center
+    ci::gl::scale(ci::Vec3f(4.0f, 4.0f, 4.0f));                                // Scale to 400%
     
     // Update the angle
     angle += ci::toDegrees(0.005f);

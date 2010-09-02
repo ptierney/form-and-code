@@ -14,18 +14,14 @@ public:
     void seed2(float dotSize, float angle, float x, float y);
 
 private:
-    int width;
-    int height;
     float dotSize;
     float angleOffsetA;
     float angleOffsetB;
 };
 
 void RecursiveTree::prepareSettings(Settings* settings) {
-    width = 900;
-    height = 600;
     dotSize = 9;
-    settings->setWindowSize(width, height);
+    settings->setWindowSize(900, 600);
     settings->setFrameRate(1.0f);  // Redraw the tree once a second
 }
 
@@ -40,7 +36,7 @@ void RecursiveTree::setup() {
 void RecursiveTree::draw() {
     ci::gl::setMatricesWindow(getWindowSize());
     ci::gl::clear(ci::Color::white());              // White background
-    ci::gl::translate(ci::Vec2f(width/2, height));   // Move to the center, bottom of the screen
+    ci::gl::translate(ci::Vec2f(getWindowWidth()/2, getWindowHeight()));   // Move to the center, bottom of the screen
     seed1(dotSize, ci::toRadians(270.0f), 0, 0);     // Start the tree
 }
 

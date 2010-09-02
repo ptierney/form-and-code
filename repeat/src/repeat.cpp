@@ -14,15 +14,11 @@ private:
     void arc(const ci::Vec2f& center, float radius, float start, float stop);
     float map(float val, float inMin, float inMax, float outMin, float outMax);
 
-    int width;
-    int height;
     int option;
 };
 
 void Repeat::prepareSettings(Settings* settings) {
-    width = 400;
-    height = 300;
-    settings->setWindowSize(width, height);
+    settings->setWindowSize(400, 300);
 }
 
 void Repeat::setup() {
@@ -38,8 +34,8 @@ void Repeat::draw() {
 
     if (option == 1) {
         // Option 1: Stitches
-        for (int x = 50; x <= width-50; x += 20) {
-            for (int y = 50; y <= height-50; y+=20) {
+        for (int x = 50; x <= getWindowWidth()-50; x += 20) {
+            for (int y = 50; y <= getWindowHeight()-50; y+=20) {
                 ci::gl::drawLine(ci::Vec2f(x-5, y-5), ci::Vec2f(x+5, y+5));
                 ci::gl::drawLine(ci::Vec2f(x+5, y-5), ci::Vec2f(x-5, y+5));
             }
@@ -47,16 +43,16 @@ void Repeat::draw() {
     }
     else if (option == 2) {
         // Option 2: Perspective
-        for (int x = 50; x <= width-50; x += 20) {
-            for (int y = 50; y <= height-50; y+=20) {
-                ci::gl::drawLine(ci::Vec2f(x, y), ci::Vec2f(width/2, height/2));
+        for (int x = 50; x <= getWindowWidth()-50; x += 20) {
+            for (int y = 50; y <= getWindowHeight()-50; y+=20) {
+                ci::gl::drawLine(ci::Vec2f(x, y), ci::Vec2f(getWindowWidth()/2, getWindowHeight()/2));
             }
         }
     }
     else if (option == 3) {
         // Option 3: Overlapping circles
-        for (int x = 50; x <= width-50; x += 20) {
-            for (int y = 50; y <= height-50; y+=20) {
+        for (int x = 50; x <= getWindowWidth()-50; x += 20) {
+            for (int y = 50; y <= getWindowHeight()-50; y+=20) {
                 ci::gl::drawStrokedCircle(ci::Vec2f(x, y), 40/2);
             }
         }
@@ -64,8 +60,8 @@ void Repeat::draw() {
     else if (option == 4) {
         // Option 4: Rotating arcs
         int count = 120;
-        for (int x = 50; x <= width-50; x += 20) {
-            for (int y = 50; y <= height-50; y +=20) {
+        for (int x = 50; x <= getWindowWidth()-50; x += 20) {
+            for (int y = 50; y <= getWindowHeight()-50; y +=20) {
                 float s = map(count, 120, 0, 0, M_PI*2*2);
                 arc(ci::Vec2f(x, y), 14/2, s, s + M_PI);
                 count--;
@@ -74,8 +70,8 @@ void Repeat::draw() {
     }
     else if (option == 5) {
         // Option 5: Groups of five
-        for (int x = 50; x < width-50; x += 20) {
-            for (int y = 50; y < height-50; y+=20) {
+        for (int x = 50; x < getWindowWidth()-50; x += 20) {
+            for (int y = 50; y < getWindowHeight()-50; y+=20) {
                 //rect(x-10, y-10, 22, 22);
                 for (int i = 0; i < 16; i+=4) {
                     ci::gl::drawLine(ci::Vec2f(x + i, y), ci::Vec2f(x + i, y + 12));
