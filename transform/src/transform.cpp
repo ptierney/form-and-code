@@ -33,13 +33,14 @@ void Transform::prepareSettings(Settings* settings) {
 
 void Transform::setup() {
     glEnable(GL_SMOOTH);
+    ci::gl::enableAlphaBlending();
 
     ci::CameraPersp new_cam = cam.getCamera();
     new_cam.setFarClip(far_clip);
     cam.setCurrentCam(new_cam);
 
     // TODO: fix this, it should load a resource
-    img = ci::loadImage("/projects/cinder/nasa-iceberg.jpg");
+    img = ci::loadImage("data/nasa-iceberg.jpg");
 
     // Make sure there's enough room in the vector
     values.resize(img.getWidth());
