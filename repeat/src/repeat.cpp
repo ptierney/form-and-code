@@ -12,7 +12,6 @@ public:
 
 private:
     void arc(const ci::Vec2f& center, float radius, float start, float stop);
-    float map(float val, float inMin, float inMax, float outMin, float outMax);
 
     int option;
 };
@@ -24,6 +23,8 @@ void Repeat::prepareSettings(Settings* settings) {
 void Repeat::setup() {
     option = 1;
     glEnable(GL_SMOOTH);
+    ci::gl::enableAlphaBlending();
+    
     glLineWidth(1.2f);
     ci::gl::color(ci::Color::black());
 }
@@ -62,7 +63,7 @@ void Repeat::draw() {
         int count = 120;
         for (int x = 50; x <= getWindowWidth()-50; x += 20) {
             for (int y = 50; y <= getWindowHeight()-50; y +=20) {
-                float s = map(count, 120, 0, 0, M_PI*2*2);
+                float s = ci::lmap<float>(count, 120, 0, 0, M_PI*2*2);
                 arc(ci::Vec2f(x, y), 14/2, s, s + M_PI);
                 count--;
             }
@@ -85,10 +86,6 @@ void Repeat::draw() {
 void Repeat::mouseDown(ci::app::MouseEvent /*event*/) {
     option++;
     if (option > 5) option = 1;
-}
-
-float Repeat::map(float val, float inMin, float inMax, float outMin, float outMax) {
-    return outMin + (outMax - outMin) * ((val - inMin) / (inMax - inMin));
 }
 
 void Repeat::arc(const ci::Vec2f& center, float radius, float start, float stop) {
