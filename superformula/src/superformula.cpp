@@ -1,6 +1,4 @@
 
-#include <algorithm>
-
 #include <cinder/app/AppBasic.h>
 
 class Superformula : public ci::app::AppBasic {
