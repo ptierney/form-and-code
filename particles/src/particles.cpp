@@ -1,3 +1,11 @@
+/**
+ * Simulate: Particles from Form+Code in Art, Design, and Architecture
+ * implemented in C++ by Patrick Tierney
+ *
+ * Requires Cinder 0.8.2 available at http://libcinder.org
+ *
+ * For more information about Form+Code visit http://formandcode.com
+ */
 
 #include <boost/date_time.hpp>
 
