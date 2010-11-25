@@ -1,3 +1,11 @@
+/**
+ * Repeat: Embedded Iteration from Form+Code in Art, Design, and Architecture
+ * implemented in C++ by Patrick Tierney (patrick.l.tierney@gmail.com)
+ *
+ * Requires Cinder 0.8.2 available at http://libcinder.org
+ *
+ * For more information about Form+Code visit http://formandcode.com
+ */
 
 #include <cinder/app/AppBasic.h>
 #include <cinder/CinderMath.h>
