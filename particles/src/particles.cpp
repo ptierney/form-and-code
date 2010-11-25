@@ -1,4 +1,6 @@
 
+#include <boost/date_time.hpp>
+
 #include <cinder/app/AppBasic.h>
 #include <cinder/Rand.h>
 #include <cinder/CinderMath.h>
@@ -11,8 +13,6 @@ public:
     void setup();
     void draw();
 
-    static float map(float val, float inMin, float inMax, float outMin, float outMax);
-
 private:
     std::vector<Particle> particles;
     bool saving;
@@ -23,20 +23,29 @@ public:
     Particle(ci::Vec2f l) {
         counter = 0;
 
+        boost::posix_time::ptime epoch(boost::gregorian::date(1970,1,1));
+        boost::posix_time::ptime now(boost::posix_time::second_clock::universal_time());
+        unsigned int seed = (now - epoch).total_seconds();
+        
+        ci::Rand rand(seed);
+
         float randmin = -M_PI / 2.0f;
         float randmax = 0;
 
-        float r = ci::Rand::randFloat(0, M_PI * 2.0f);
+        float r = rand.randFloat(0, M_PI * 2.0f);
         float x = ci::math<float>::cos(r);
         float y = ci::math<float>::sin(r);
         acc = ci::Vec2f(x / 250.0f, y / 250.0f);
 
-        float q = ci::Rand::randFloat(0, 1);
-        r = ci::Rand::randFloat(randmin, randmax);
+        float q = rand.randFloat(0, 1);
+        r = rand.randFloat(randmin, randmax);
         x = ci::math<float>::cos(r) * q;
         y = ci::math<float>::sin(r) * q;
         vel = ci::Vec2f(x, y);
         loc = l;
+
+        counter = 0;
+        hist.resize(1000);
     }
 
     void update() {
@@ -44,8 +53,8 @@ public:
         loc += vel;
         // save location every 10 frames
         if (ci::app::getElapsedFrames() % 10 == 0) {
-            ci::app::console() << "saving history" << std::endl;
-            hist.push_back(loc);      
+            hist[counter] = (loc);  
+            counter++;
         }
     }
 
@@ -55,16 +64,18 @@ public:
         // Translate to location to render vector
         ci::gl::translate(ci::Vec2f(loc.x, loc.y));
 
-        //ci::gl::rotate(v);
+        // Rotate to the vector heading
+        ci::Quatf q(0.0f, 0.0f, ci::math<float>::atan2(v.normalized().y, v.normalized().x));
+        ci::gl::rotate(q);
 
         // Calculate length of vector & scale it to be bigger or smaller if necessary
         float len = v.length()*scale;
-        arrowsize = Particles::map(len, 0, 10, 0, 1) * arrowsize;
+        arrowsize = ci::lmap<float>(len, 0, 10, 0, 1) * arrowsize;
 
         // Draw point
         glColor4f(0.0f, 0.0f, 0.0f, 100.0f/255.0f);
         ci::gl::drawLine(ci::Vec2f(0,0),ci::Vec2f(len-arrowsize,0));
-        glBegin(GL_LINE_LOOP);
+        glBegin(GL_TRIANGLES);
         glVertex2f(len,0);
         glVertex2f(len-arrowsize,+arrowsize/2);
         glVertex2f(len-arrowsize,-arrowsize/2);
@@ -76,13 +87,19 @@ public:
     void draw() {
         float c = 100.0f/255.0f;
         glColor4f(c, c, c, 50.0f/255.0f);
-        //drawArrowHead(vel,loc,10);
+
+        drawArrowHead(vel,loc,10);
+
         // draw history path
         glColor4f(0.0f, 0.0f, 0.0f, 100.0f/255.0f);
         glBegin(GL_LINE_STRIP);
-        std::for_each(hist.begin(), hist.end(), [&](ci::Vec2f vec) { glVertex2f(vec.x, vec.y); });
-        glEnd();
+        for (int i = 0; i < counter; i++) {
+            glVertex2f(hist[i].x, hist[i].y);
+        }
+
         if (!hist.empty()) glVertex2f(loc.x, loc.y);
+        
+        glEnd();
     }
 
 private:
@@ -99,7 +116,8 @@ void Particles::prepareSettings(Settings* settings) {
 }
 
 void Particles::setup() {
-    glEnable(GL_SMOOTH);
+    glEnable(GL_LINE_SMOOTH);
+    ci::gl::enableAlphaBlending();
 
     for (int i = 0; i < 1000; i++) {
         particles.push_back(Particle(ci::Vec2f(100, getWindowHeight()-100)));
@@ -110,11 +128,12 @@ void Particles::draw() {
     ci::gl::setMatricesWindow(getWindowSize());
     ci::gl::clear(ci::Color::white());
 
-    std::for_each(particles.begin(), particles.end(), [&](Particle& particle) { particle.update(); particle.draw(); } );
+    for (std::vector<Particle>::iterator it = particles.begin(); 
+        it != particles.end(); ++it) {
+        it->update();
+        it->draw();
+    }
 }
 
-float Particles::map(float val, float inMin, float inMax, float outMin, float outMax) {
-    return outMin + (outMax - outMin) * ((val - inMin) / (inMax - inMin));
-}
 
 CINDER_APP_BASIC(Particles, ci::app::RendererGl)

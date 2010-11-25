@@ -1,5 +1,6 @@
 Debug
 ipch
+Release
 *.sdf
 *.suo
 *.user
