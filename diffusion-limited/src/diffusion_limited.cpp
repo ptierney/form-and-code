@@ -1,3 +1,13 @@
+/**
+ * Simulate: Diffusion-Limited Aggregation from Form+Code in Art, Design, and Architecture
+ * implemented in C++ by Patrick Tierney (patrick.l.tierney@gmail.com)
+ *
+ * Requires Cinder 0.8.2 available at http://libcinder.org
+ *
+ * Project files are located at https://github.com/hlp/form-and-code
+ *
+ * For more information about Form+Code visit http://formandcode.com
+ */
 
 #include <vector>
 
@@ -28,8 +38,6 @@ public:
 private:
     int particleCount;
     std::vector<ParticlePtr> particles;
-    ci::Surface surface;
-    ci::gl::Texture texture;
     GLubyte* data;
     int dataSize;
 };
@@ -127,7 +135,7 @@ private:
 
 
 void Diffusion::prepareSettings(Settings* settings) {
-    settings->setWindowSize(400, 400);
+    settings->setWindowSize(1024, 700);
 }
 
 void Diffusion::setup() {
@@ -152,38 +160,29 @@ void Diffusion::setup() {
         particles[i] = ParticlePtr(new Particle(*this));
     }
 
-    dataSize = getWindowWidth() * getWindowHeight();
-    data = new GLubyte[getWindowHeight() * getWindowWidth() * 4];
+    // create pixel buffer
+    dataSize = getWindowWidth() * getWindowHeight() * 3;
+    data = new GLubyte[dataSize];
 
     // set all pixels to white
-    for (int i = 0; i < getWindowWidth(); i++) {
-        for (int j = 0; j < getWindowHeight(); j++) {
-            data[i * getWindowHeight() * 4 + j * 4] = (GLubyte) 255;
-            data[i * getWindowHeight() * 4 + j * 4 + 1] = (GLubyte) 255;
-            data[i * getWindowHeight() * 4 + j * 4 + 2] = (GLubyte) 255;
-            data[i * getWindowHeight() * 4 + j * 4 + 3] = (GLubyte) 255;
-        }
+    for (int i = 0; i < dataSize; i++) {
+        data[i] = (GLubyte) 255;
     }
-
-    texture = ci::gl::Texture(data, GL_RGBA, getWindowWidth(), getWindowHeight());
 }
 
 void Diffusion::update() {
-    for(int i=0; i < particleCount; i++) {
+    for(int i = 0; i < particleCount; i++) {
         particles[i]->update();
         if (particles[i]->stuck) {
-            data[particles[i]->x * getWindowHeight() * 4 + particles[i]->y * 4] = (GLubyte) 0;
-            data[particles[i]->x * getWindowHeight() * 4 + particles[i]->y * 4 + 1] = (GLubyte) 0;
-            data[particles[i]->x * getWindowHeight() * 4 + particles[i]->y * 4 + 2] = (GLubyte) 0;
-            data[particles[i]->x * getWindowHeight() * 4 + particles[i]->y * 4 + 3] = (GLubyte) 255;
+            data[particles[i]->y * getWindowWidth() * 3 + particles[i]->x * 3] = (GLubyte) 0;
+            data[particles[i]->y * getWindowWidth() * 3 + particles[i]->x * 3 + 1] = (GLubyte) 0;
+            data[particles[i]->y * getWindowWidth() * 3 + particles[i]->x * 3 + 2] = (GLubyte) 0;
         }
     }
-
-    texture = ci::gl::Texture(data, GL_RGBA, getWindowWidth(), getWindowHeight());
 }
 
 void Diffusion::draw() {
-    ci::gl::draw(texture, ci::Vec2f(0, 0));
+    glDrawPixels(getWindowWidth(), getWindowHeight(), GL_RGB, GL_UNSIGNED_BYTE, data);  
 }
 
 void Diffusion::shutdown() {
