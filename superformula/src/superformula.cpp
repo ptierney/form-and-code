@@ -4,6 +4,8 @@
  *
  * Requires Cinder 0.8.2 available at http://libcinder.org
  *
+ * Project files are located at https://github.com/hlp/form-and-code
+ *
  * For more information about Form+Code visit http://formandcode.com
  */
 
