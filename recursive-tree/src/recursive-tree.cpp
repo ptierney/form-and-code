@@ -25,6 +25,7 @@ private:
     float dotSize;
     float angleOffsetA;
     float angleOffsetB;
+    ci::Rand rand;
 };
 
 void RecursiveTree::prepareSettings(Settings* settings) {
@@ -39,6 +40,8 @@ void RecursiveTree::setup() {
 
     angleOffsetA = ci::toRadians(1.5f);
     angleOffsetB = ci::toRadians(50.0f);
+
+    rand.randomize();
 }
 
 void RecursiveTree::draw() {
@@ -53,7 +56,7 @@ void RecursiveTree::seed1(float dotSize, float angle, float x, float y) {
     if (dotSize > 1.0) {
 
         // Create a random numbers between 0 and 1
-        float r = ci::Rand::randFloat(0, 1.0f);  
+        float r = rand.randFloat(0, 1.0f);  
 
         // 02% chance this will happen
         if (r > 0.02) {
@@ -79,7 +82,7 @@ void RecursiveTree::seed2(float dotSize, float angle, float x, float y) {
     if (dotSize > 1.0) {
 
         // Create a random numbers between 0 and 1
-        float r = ci::Rand::randFloat(0, 1.0);
+        float r = rand.randFloat(0, 1.0);
 
         // 5% chance this will happen
         if (r > 0.05) {

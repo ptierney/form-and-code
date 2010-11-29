@@ -33,22 +33,16 @@ public:
     Particle(ci::Vec2f l) {
         counter = 0;
 
-        boost::posix_time::ptime epoch(boost::gregorian::date(1970,1,1));
-        boost::posix_time::ptime now(boost::posix_time::second_clock::universal_time());
-        unsigned int seed = (now - epoch).total_seconds();
-        
-        ci::Rand rand(seed);
-
         float randmin = -M_PI / 2.0f;
         float randmax = 0;
 
-        float r = rand.randFloat(0, M_PI * 2.0f);
+        float r = ci::Rand::randFloat(0, M_PI * 2.0f);
         float x = ci::math<float>::cos(r);
         float y = ci::math<float>::sin(r);
         acc = ci::Vec2f(x / 250.0f, y / 250.0f);
 
-        float q = rand.randFloat(0, 1);
-        r = rand.randFloat(randmin, randmax);
+        float q = ci::Rand::randFloat(0, 1);
+        r = ci::Rand::randFloat(randmin, randmax);
         x = ci::math<float>::cos(r) * q;
         y = ci::math<float>::sin(r) * q;
         vel = ci::Vec2f(x, y);

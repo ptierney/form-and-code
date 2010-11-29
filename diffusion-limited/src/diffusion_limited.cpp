@@ -49,20 +49,14 @@ public:
         width = diffusionApp.getWindowWidth();
         height = diffusionApp.getWindowHeight();
 
-        boost::posix_time::ptime epoch(boost::gregorian::date(1970,1,1));
-        boost::posix_time::ptime now(boost::posix_time::second_clock::universal_time());
-        unsigned int seed = (now - epoch).total_seconds();
-        
-        rand.seed(seed);
-
         reset();
     }
 
     void reset() {
         // keep choosing random spots until an empty one is found
         do {
-            x = rand.randInt(width);
-            y = rand.randInt(height);
+            x = ci::Rand::randInt(width);
+            y = ci::Rand::randInt(height);
         } while (field[y * width + x]);
     }
 
@@ -70,8 +64,8 @@ public:
         // move around
         if (!stuck) {
             // get random int [-1, 1] (hence 2)
-            x += rand.randInt(-1, 2);
-            y += rand.randInt(-1, 2);
+            x += ci::Rand::randInt(-1, 2);
+            y += ci::Rand::randInt(-1, 2);
       
             if (x < 0 || y < 0 || x >= width || y >= height) {
                 reset();
@@ -130,7 +124,6 @@ public:
 private:
     int width, height;
     std::vector<bool>& field;
-    ci::Rand rand;
 };
 
 
