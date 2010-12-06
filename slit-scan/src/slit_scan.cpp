@@ -19,6 +19,7 @@ public:
     void setup();
     void update();
     void draw();
+    void shutdown();
 
 private:
     ci::Capture capture;
@@ -110,6 +111,10 @@ void SlitScan::draw() {
         draw_position_x = 0;
 
     glDrawPixels(window_width, window_height, GL_RGB, GL_UNSIGNED_BYTE, data);
+}
+
+void SlitScan::shutdown() {
+    delete [] data;
 }
 
 
