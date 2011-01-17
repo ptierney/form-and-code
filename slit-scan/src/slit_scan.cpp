@@ -1,6 +1,6 @@
 /**
  * Transform: Slit-Scan from Form+Code in Art, Design, and Architecture
- * implemented in C++ by Patrick Tierney (patrick.l.tierney@gmail.com)
+ * implemented in C++ by Patrick Tierney (patrick.l.tierney@gmail.com || http://ptierney.com)
  *
  * Requires Cinder 0.8.2 available at http://libcinder.org
  *
