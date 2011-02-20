@@ -62,7 +62,11 @@ void Superformula::draw() {
 
         std::vector<ci::Vec2f> points = superformula(mm, nn1, nn2, nn3);
         glVertex2f(points[points.size()-1].x * sscaler, points[points.size()-1].y * sscaler);
-        std::for_each(points.begin(), points.end(), [sscaler](ci::Vec2f vec) { glVertex2f(vec.x * sscaler, vec.y * sscaler); });
+
+        for (std::vector<ci::Vec2f>::iterator it = points.begin(); it != points.end(); ++it) {
+            glVertex2f(it->x * sscaler, it->y * sscaler);
+        }
+
         glVertex2f(points[points.size()-1].x * sscaler, points[points.size()-1].y * sscaler);
 
         glEnd();
