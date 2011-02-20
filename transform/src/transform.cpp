@@ -65,7 +65,7 @@ void Transform::setup() {
         int j = 0;
 		while(it.pixel()) {
             ci::Color c = ci::Color(it.r(), it.g(), it.b());
-            values[j][i] = c.get(ci::ColorModel::CM_HSV)[2];
+            values[j][i] = c.get(ci::CM_HSV)[2];
             j++;
 		}
         i++;
